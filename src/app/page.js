@@ -7,10 +7,13 @@ import { addToCart } from "./redux/features/cartSlice";
 import { useRouter } from "next/navigation";
 import { IoMdClose } from "react-icons/io";
 import { toast } from "react-toastify";
+import { useTheme } from 'next-themes';
+import { FiMoon, FiSun } from "react-icons/fi";
 
 export default function HomePage() {
   const dispatch = useDispatch();
   const router = useRouter();
+  const { theme, setTheme } = useTheme();
 
   const { items: products, loading, error } = useSelector((state) => state.products);
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -28,9 +31,23 @@ export default function HomePage() {
     setSelectedProduct(null);
   };
 
+  // Toggle the theme
+  const toggleTheme = () => {
+    setTheme(theme === 'light' ? 'dark' : 'light');
+  };
+
   return (
-    <div className="bg-white min-h-screen">
+    <div className={`min-h-screen ${theme === 'dark' ? 'bg-gray-900 text-white' : 'bg-white text-black'}`}>
       <Navbar />
+
+      {/* Dark Mode Toggle Button */}
+      {/* <button
+        onClick={toggleTheme}
+        className="fixed top-4 right-4 p-2 rounded-full bg-gray-800 text-white hover:bg-gray-700 transition duration-300"
+        aria-label="Toggle Dark Mode"
+      >
+        {theme === 'dark' ? <FiSun className="text-xl" /> : <FiMoon className="text-xl" />}
+      </button> */}
 
       <div className="p-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
         {loading && <p className="text-center">Loading...</p>}
